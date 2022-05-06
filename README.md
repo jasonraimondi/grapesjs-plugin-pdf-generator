@@ -1,4 +1,4 @@
-# Grapesjs Plugin Pdf Generator
+# Grapesjs Plugin Pdf Generator (WIP NOT WORKING YET)
 
 [DEMO](##)
 > **Provide a live demo of your plugin**
