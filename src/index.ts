@@ -1,6 +1,5 @@
 // @ts-ignore
 import grapesjs from "grapesjs";
-import { jsPDF as HtmlToPdf } from "jspdf";
 
 export default (editor: grapesjs.Editor, opts = {}) => {
   const pfx = editor.getConfig("stylePrefix");
@@ -10,15 +9,17 @@ export default (editor: grapesjs.Editor, opts = {}) => {
   const options = {
     addPrintButton: true,
     btnLabel: "Export to PDF",
-    root: (editor: grapesjs.Editor) =>
-      `<!doctype html>
+    outFileName: "generated-file.pdf",
+    root(editor: grapesjs.Editor) {
+      return `<!doctype html>
         <html lang="en">
           <head>
             <meta charset="utf-8">
             <style>${editor.getCss()}</style>
           </head>
           <body>${editor.getHtml()}</body>
-        <html>`,
+        <html>`;
+    },
     ...opts,
   };
 
@@ -26,23 +27,31 @@ export default (editor: grapesjs.Editor, opts = {}) => {
   btnPrint.className = `${pfx}btn-prim`;
 
   editor.Commands.add(commandName, async (editor: grapesjs.Editor) => {
-    const htmlToPdf = new HtmlToPdf();
+    await import("dompurify");
+    const { jsPDF } = await import("jspdf");
+    const htmlToPdf = new jsPDF();
 
     async function savePDF(content: string, js?: string) {
       if (js) htmlToPdf.addJS(js);
       await new Promise(resolve => htmlToPdf.html(content, { callback: resolve }));
-      htmlToPdf.save("a4.pdf");
+      htmlToPdf.save(options.outFileName);
     }
 
     await savePDF(options.root(editor), editor.getJs());
   });
 
   if (options.addPrintButton) {
-    editor.on("run:generate-pdf", () => {
-      editor.Modal.getContentEl().appendChild(btnPrint);
-      btnPrint.onclick = () => {
-        editor.runCommand(commandName);
-      };
-    });
+    // editor.on("run:generate-pdf", () => {
+    //   editor.Modal.getContentEl().appendChild(btnPrint);
+    //   btnPrint.onclick = () => {
+    //     editor.runCommand(commandName);
+    //   };
+    // });
+    console.log(btnPrint)
+
+    // editor.Modal.getContentEl().appendChild(btnPrint);
+    // btnPrint.onclick = () => {
+    //   editor.runCommand(commandName);
+    // };
   }
 };
