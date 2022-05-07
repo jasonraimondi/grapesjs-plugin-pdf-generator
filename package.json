@@ -1,6 +1,6 @@
 {
   "name": "grapesjs-plugin-pdf-generator",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Grapesjs Plugin Pdf Generator",
   "license": "MIT",
   "main": "dist/index.js",
