@@ -1,6 +1,6 @@
 {
   "name": "grapesjs-plugin-pdf-generator",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "description": "Grapesjs Plugin Pdf Generator",
   "license": "MIT",
   "main": "dist/index.js",
@@ -11,8 +11,7 @@
   "scripts": {
     "prepublish": "rm -rf dist && pnpm build",
     "start": "grapesjs-cli serve",
-    "build": "grapesjs-cli build -- --public-path=''",
-    "bump": "npm version patch -m 'Bump v%s'"
+    "build": "grapesjs-cli build --patch=false"
   },
   "keywords": [
     "grapesjs",
